@@ -1,0 +1,64 @@
+/******************************************************************************
+
+                            Online Java Compiler.
+                Code, Compile, Run and Debug java program online.
+Write your code in this editor and press "Run" button to execute it.
+
+*******************************************************************************/
+
+public class Main
+{
+	public static void main(String[] args) {
+	    Pizza pizza =new Vegetables(new Chicken());
+	    System.out.println( pizza.decorator());
+	}
+}
+ interface Pizza {
+
+    public String decorator() ;
+}
+ class BasicPizza implements Pizza{
+    @Override
+    public String decorator() {
+        return "Pizza";
+    }
+    
+
+}
+ abstract class PizzaDecorator implements Pizza {
+     Pizza pizza;
+     PizzaDecorator (Pizza pizza ){
+         this.pizza=pizza;
+     }
+
+    public String decorator (){
+        return pizza.decorator();
+    }
+
+}
+
+ 
+
+ class Chicken extends PizzaDecorator{
+    Chicken(Pizza pizza){
+        super(pizza);
+    }
+    public String decorator (){
+        return super.decorator()+ChickenPizza();
+    }
+    public String ChickenPizza(){
+        return "with Chicken ";
+    }
+}
+class Vegetables extends PizzaDecorator{
+    Vegetables(Pizza pizza ){
+        super(pizza);
+    }
+    public String decorator (){
+        return super.decorator()+vegetablePizza();
+    }
+    public String vegetablePizza(){
+        return "with vegetables ";
+    }
+}
+
