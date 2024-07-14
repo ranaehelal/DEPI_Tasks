@@ -1,0 +1,42 @@
+/******************************************************************************
+
+                            Online Java Compiler.
+                Code, Compile, Run and Debug java program online.
+Write your code in this editor and press "Run" button to execute it.
+
+*******************************************************************************/
+
+public class Main
+{
+    //Cassete c =new Cassete ("old");
+    Player play =new play ();
+    player.play("old");
+    
+}
+
+interface Player{
+    void play (String oldTape);
+}
+class Cassete implements Player{
+    void play(String oldTape) {
+        System.out.print(oldTape);
+    }
+}
+
+
+class Mp3{
+    void playMp3(String newtape){
+        System.out.print(newtape);
+    }
+}
+
+class Adapter implements Player{
+    Mp3 mp3;
+    void play(String oldTape) {
+        mp3.playMp3(oldTape);
+    }
+    
+}
+
+
+
