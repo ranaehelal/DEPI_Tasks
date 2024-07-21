@@ -1,0 +1,165 @@
+
+import java.util.*;
+class HelloWorld {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+    }
+}
+//builder 
+ class Product{
+    String name; 
+    String color;
+    double weight;
+    int size;
+    Product(ProductBuilder productBuilder){
+        this.name=name;
+        this.color=color;
+        this.weight=weight;
+        this.size=size;
+    }
+    
+   static class  ProductBuilder {
+        private String name ;
+        private String color;
+        private double weight;
+        private int size;
+        
+        ProductBuilder setName (){
+            this.name=name;
+            return this;
+        }
+        ProductBuilder setColor (){
+            this.color=color;
+            return this;
+        }
+        ProductBuilder setWeight (){
+            this.weight=weight;
+            return this;
+        }
+         ProductBuilder setSize (){
+            this.size=size;
+            return this;
+        }
+        
+        Product build (){
+            return new Product(this);
+        }
+        
+        
+    }
+
+}
+ class Print {
+    Product product ;
+    void printProduct (Product product){
+        System.out.println("color"+product.color);
+        System.out.println("Weight"+product.weight);
+        System.out.println("Size"+product.size);
+    }
+}
+//product catelog singleton 
+//stategy factory --> not strategy 
+ class ProductsList {
+    ArrayList <Product> productslist=new ArrayList <> ();
+    Order order;
+    PaymentMethod paymentMethod =new PaymentMethod ();
+    void performOrder(){
+        order.makeOrder();
+    }
+    void performPayment (){
+        paymentMethod. performPaymentMethod();
+    }
+    void setOrder (Order Order){
+        this.order =order;
+        
+    }
+    void setPayment(PaymentMethod paymentMethod){
+        this.paymentMethod=paymentMethod;
+    }
+    
+
+    
+    
+}
+//stategy factory --> not strategy 
+//factory not abstract cuz iwll not add in it in the future 
+//yagni read about it 
+interface Order {
+    ProductsList productslist=new ProductsList() ;
+    void makeOrder ();
+    
+}
+ class OnLineOrder implements Order {
+     void makeOrder(){
+         System.out.println("OnLine Order ");
+     }
+    
+}
+ class  InStorePickupOrders implements Order {
+     void makeOrder(){
+         System.out.println("In Store Pickup Order ");
+     }
+    
+}
+//stategy factory --> not strategy 
+
+interface PaymentMethod {
+    void performPaymentMethod();
+    
+}
+ class  CreditCard implements PaymentMethod{
+      void performPaymentMethod(){
+          System.out.println("Credit Card");
+      }
+    
+}
+ class  PayPal implements PaymentMethod{
+      void performPaymentMethod(){
+          System.out.println("PayPal");
+      }
+    
+}
+ class   BankTransfer implements PaymentMethod{
+     void performPaymentMethod(){
+         System.out.println("BankTransfer");
+
+     }
+}
+
+//adapter or facade 
+interface OldUI{
+    void display ();
+     void oldscrollBar(ProductsList productsList);
+}
+class ImplementoldUI implements OldUI{
+    void display (){
+        System.out.println("old");
+    }
+     void oldscrollBar(ProductsList productsList){
+        System.out.println("Scroll");
+    }
+}
+interface NewUI{
+    void displaynew ();
+    void scrollBar(ProductsList productsList);
+
+}
+class ImplementoNewUI implements NewUI{
+    void displaynew (){
+        System.out.println("new");
+    }
+    void scrollBar(ProductsList productsList){
+        System.out.println("Scroll");
+    } 
+}
+class AdpaterUI implements NewUI{
+    OldUI oldUI =new OldUI();
+    void displaynew(){
+        oldUI.display();
+    }
+     void scrollBar(ProductsList productsList){
+        oldUI.oldscrollBar(productsList);
+    } 
+    
+}
+//payment handling facade cuz every payment has it own process 
