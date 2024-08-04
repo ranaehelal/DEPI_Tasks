@@ -6,7 +6,7 @@ class Library {
     final foundBooks = books.where((book) => book.title == title).toList();
     return foundBooks.isNotEmpty ? foundBooks[0] : null;
   }
-
+//reduce
 
   void addBook(Book book) {
     books.add(book);
@@ -53,7 +53,7 @@ class Library {
       print('Title: ${book.title}, Author: ${book
           .author}, Year Published: ${book
           .yearPublished}, Is Checked Out: ${book.isCheckedOut}');
-    }
+    }//.map
   }
 }
 class Book {
@@ -86,7 +86,7 @@ class  BookFilter {
       }
     }
     return filteredBooks;
-  }
+  }//where
 }
 FilterFunction filterByAuthor(String author) {
   return (Book book) => book.author == author;
