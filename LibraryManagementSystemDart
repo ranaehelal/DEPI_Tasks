@@ -1,0 +1,184 @@
+typedef FilterFunction = bool Function(Book book);
+class Library {
+  List<Book> books = [];
+
+  Book? findBookByTitle(String title) {
+    final foundBooks = books.where((book) => book.title == title).toList();
+    return foundBooks.isNotEmpty ? foundBooks[0] : null;
+  }
+
+
+  void addBook(Book book) {
+    books.add(book);
+  }
+
+  void removeBook(String title) {
+    Book? book = findBookByTitle(title);
+    if (book != null) {
+    books.remove(book);
+    }
+    else{
+      print('Book not found');
+    }
+  }
+  void editBook (String title,{ String? newTitle, String ?newAuthor, int? newYearPublished, bool ?newIsCheckedOut}) {
+    Book? book = findBookByTitle(title);
+    if (book != null) {
+      if (newTitle != null) book.title = newTitle;
+      if (newAuthor != null) book.author = newAuthor;
+      if (newYearPublished != null) book.yearPublished = newYearPublished;
+      if (newIsCheckedOut != null) book.isCheckedOut = newIsCheckedOut;
+    }
+    else{
+      print('Book not found');
+    }
+
+  }
+
+  List<Book> getBooks() => books;
+  void getBookStatus(Book book) {
+    String status;
+    switch (book.isCheckedOut) {
+      case true:
+        status = 'Book is checked out';
+        break;
+      case false:
+        status = 'Book is not checked out';
+        break;
+    }
+    print(status);
+  }
+  void printBooksDetails() {
+    for (Book book in books) {
+      print('Title: ${book.title}, Author: ${book
+          .author}, Year Published: ${book
+          .yearPublished}, Is Checked Out: ${book.isCheckedOut}');
+    }
+  }
+}
+class Book {
+
+  String title;
+  String author;
+  int yearPublished;
+  bool isCheckedOut;
+
+  Book({required this.title,required this.author,required this.yearPublished, required this.isCheckedOut});
+  Book.unknownAuthor({required this.title,required this.yearPublished}):
+        this.author='Unknown Author'
+  , this.isCheckedOut=false;
+
+  factory Book.fromMap(Map<String, dynamic> map) {
+    return Book(
+      title: map['title']?? 'Unknown Title',
+      author: map['author']?? 'Unknown Author',
+      yearPublished: map['yearPublished']??0,
+      isCheckedOut: map['isCheckedOut']??false,
+    );
+  }
+}
+class  BookFilter {
+  List<Book> filterBooks(List<Book> books, FilterFunction filterFunction) {
+    List<Book> filteredBooks = [];
+    for (Book book in books) {
+      if (filterFunction(book)) {
+        filteredBooks.add(book);
+      }
+    }
+    return filteredBooks;
+  }
+}
+FilterFunction filterByAuthor(String author) {
+  return (Book book) => book.author == author;
+}
+FilterFunction filterByYearPublishedAfter(int year) {
+  return (Book book) => book.yearPublished >= year;
+
+}
+class LibraryStatistics {
+  Library library;
+
+  LibraryStatistics(this.library);
+
+  int totalBooks() {
+    return library.getBooks().length;
+  }
+
+  // Method to count number of books not checked out
+  int booksNotCheckedOut() {
+    return library.getBooks().map((book) => book.isCheckedOut ? 0 : 1).reduce((a, b) => a + b);
+  }
+  //total books published After ..
+  int totalBooksPublishedAfter(int year) {
+    return library.getBooks().fold(0, (total, book) => total + (book.yearPublished >= year ? 1 : 0));
+  }
+  List<String> getTitles() {
+    return library.getBooks().map((book) => book.title).toList();
+  }
+// Additional methods for other statistics can be added here
+}
+void main() {
+  Library library = Library();
+  library.addBook(Book(title: 'Book 1', author: 'Author 1', yearPublished: 2020, isCheckedOut: true));
+  library.addBook(Book(title: 'Book 2', author: 'Author 2', yearPublished: 2021, isCheckedOut: false));
+  library.addBook(Book(title: 'Book 3', author: 'Author 3', yearPublished: 2022, isCheckedOut: true));
+  library.addBook(Book(title: 'Book 4', author: 'Author 4', yearPublished: 2023, isCheckedOut: false));
+  library.addBook(Book(title: 'Book 5', author: 'Author 5', yearPublished: 2024, isCheckedOut: true));
+  library.addBook(Book(title: 'Book 6', author: 'Author 6', yearPublished: 2025, isCheckedOut: false));
+  print('---------------------------------------------------------------------------------------------------------');
+
+  print('All Books Details:\n');
+  library.printBooksDetails();
+  print('---------------------------------------------------------------------------------------------------------');
+  // Create BookFilter
+
+  BookFilter filter = BookFilter();
+
+  FilterFunction filterByAuthorFunction = filterByAuthor('Author 1');
+
+  List<Book> author1Books = filter.filterBooks(library.getBooks(), filterByAuthorFunction);
+  print('Books by Author 1:\n');
+  for (var book in author1Books) {
+    print('Title: ${book.title}');
+  }
+//*******************************************
+
+  FilterFunction filterByYearPublishedAfterFunction = filterByYearPublishedAfter(2022);
+  List<Book> booksPublishedAfter2022 = filter.filterBooks(library.getBooks(), filterByYearPublishedAfterFunction);
+  print('Books published after 2022:\n');
+  for (var book in booksPublishedAfter2022) {
+    print('Title: ${book.title}');
+  }
+  print('---------------------------------------------------------------------------------------------------------');
+
+
+  print('All Books Details:\n');
+  library.printBooksDetails();
+  print('---------------------------------------------------------------------------------------------------------');
+
+  print('Editing "Book 2":\n');
+  library.editBook('Book 2', newTitle: 'Updated Book 2', newAuthor: 'Updated Author 2', newIsCheckedOut: true);
+
+  print('Book list after editing:\n');
+  library.printBooksDetails();
+  print('---------------------------------------------------------------------------------------------------------');
+
+
+  print('Removing "Book 3":\n');
+  library.removeBook('Book 3');
+
+  print('Book list after removing:\n');
+  library.printBooksDetails();
+
+print('---------------------------------------------------------------------------------------------------------');
+  // Create LibraryStatistics
+  LibraryStatistics stats = LibraryStatistics(library);
+
+  print('Total number of books: ${stats.totalBooks()}\n');
+
+  print('Number of books not checked out: ${stats.booksNotCheckedOut()}\n');
+
+  print('Number of books published after 2022: ${stats.totalBooksPublishedAfter(2022)}\n');
+
+  print('All Book Titles: ${stats.getTitles()}');
+}
