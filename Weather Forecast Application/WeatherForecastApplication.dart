@@ -7,7 +7,7 @@ Future<String> fetchWeatherData() async {
   });
 
 }
-Future<Map<String, dynamic>> parseWeatherData(String rawData) async {
+Future<Map<String, dynamic>?> parseWeatherData(String rawData) async {
     //  parsing the JSON
   try{
     final parsedData = jsonDecode(rawData); //jsonDecode frm json package dart :convert to map object
@@ -15,11 +15,11 @@ Future<Map<String, dynamic>> parseWeatherData(String rawData) async {
   }
   on FormatException catch (e) {
     print('A FormatException occurred: $e');
-    rethrow;
+    return null;
   }
   catch (e) {
     print('Unexpected error: $e');
-    rethrow;
+    return null;
   }
 }
 Future<void> displayWeatherInfo(Map<String, dynamic> weatherInfo) async {
@@ -31,9 +31,19 @@ Future<void> displayWeatherInfo(Map<String, dynamic> weatherInfo) async {
 Future<void> mainApp() async {
   print("start");
 
+  try {
     final rawData = await fetchWeatherData();
     final weatherInfo = await parseWeatherData(rawData);
-    await displayWeatherInfo(weatherInfo);
+    if (weatherInfo != null) {
+      await displayWeatherInfo(weatherInfo);
+    }
+    else {
+      print('No weather information available due to parsing error.');
+    }
+  }
+  catch (e) {
+    print('Error in mainApp: $e');
+  }
 
   print("end");
 
@@ -41,7 +51,7 @@ Future<void> mainApp() async {
 
 
 void main() {
-  //mainApp();
-  runZonedGuarded(() async {await mainApp();}, (error, stackTrace) {print('Uncaught error: $error');});
+  mainApp();
+  //runZonedGuarded(() async {await mainApp();}, (error, stackTrace) {print('Uncaught error: $error');});
 }
 
