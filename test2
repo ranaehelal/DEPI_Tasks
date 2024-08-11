@@ -6,7 +6,7 @@ Write your code in this editor and press "Run" button to execute it.
 
 *******************************************************************************/
 
-public class Main
+public class Main2
 {
     //Cassete c =new Cassete ("old");
     Player play =new play ();
