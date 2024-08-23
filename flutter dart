@@ -1,0 +1,58 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyListColListViewApp());
+}
+class User {
+  final String name ;
+  final Color color;
+  final List <String> friends ;
+   User({
+    required this.name,
+    required this.color,
+    required this.friends,
+    });
+}
+class MyListColListViewApp extends StatelessWidget {
+  MyListColListViewApp ({super.key});
+  
+  final List<User> users = [
+   User( name: 'Rana',color:Colors.pink ,friends:['f1','f2']),
+   User( name: 'u2',color:Colors.red ,friends:['f3','f4']),
+
+  ];
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: Text('ListView Example')), 
+         body: ListView.builder(
+           itemCount: users.length,
+           itemBuilder: (context, index) => Container(
+            color: users[index].color,
+            padding: EdgeInsets.all(8),
+            child: Column(
+              Text(users[index].name,)
+              Expanded(friendView),
+              
+           ),
+         ),
+         ),
+         ),
+    );
+  }
+  Widget friendView (BuildContext context){
+    return ListView.builder(
+           itemCount: users.friends.length,
+           itemBuilder: (context, index) => Container(
+            color: users[index].color,
+            padding: EdgeInsets.all(8),
+            child: //(
+               child: Text(
+                users[index].friends,
+                ),
+           ), 
+         );
+        
+  }
+
