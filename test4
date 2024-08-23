@@ -1,0 +1,90 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyGridViewApp());
+}
+
+class MyGridViewApp extends StatelessWidget {
+  MyGridViewApp ({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: Text('GridView Example')), 
+         body: GridView.builder(
+           itemCount: 64,
+           gridDelegate:const SliverGridDelegateWithFixedCrossAxisCount( 
+            crossAxisCount: 8,
+            crossAxisSpacing: 5,
+            mainAxisSpacing: 5,
+            ),
+           itemBuilder: (context, index) => Container(
+           color: (index%2==0)?  Colors.brown: Color.fromARGB(255, 245, 172, 138),
+           
+          child: Center(child: Text('$index')),
+
+           ),
+         ),
+         ),
+        
+    );
+  }
+}
+
+------------------------------------
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyStackViewApp());
+}
+
+class MyStackViewApp extends StatelessWidget {
+  MyStackViewApp ({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: Text('GridView Example')), 
+         body: 
+         Container(
+          color: Color.fromARGB(255, 132, 189, 236),
+          width: 400,
+          height: 400,
+         child:Stack(
+           
+         children: <Widget>[
+          
+          Positioned(  
+             top: 10,  
+              right: 10,  
+              child: Container(
+                width: 300,
+                height: 300,
+                color: Colors.red,
+          ),
+          ),
+           Positioned(  
+             top: 60,  
+              right: 30,  
+              child: Container(
+                width: 90,
+                height: 90,
+                color: Color.fromARGB(255, 95, 54, 244),
+          ),
+          ),
+           Positioned(  
+             top: 30,  
+              left: 40,  
+              child: Container(
+                width: 60,
+                height: 60,
+                color: Color.fromARGB(255, 187, 244, 54),
+          ),
+          ),
+  ],
+)),
+         ),
+        
+    );
+  }
+}
